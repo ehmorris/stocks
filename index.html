@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <title>Stocks!</title>
     <link rel="icon" href="https://d3v3cbxkdlyonc.cloudfront.net/stocks/favicon.ico">
+    <script src="./html2canvas.min.js" async></script>
     <meta name="description" content="A free, lightweight, blazing-fast page to get stock quotes using the IEX API">
 
     <style>
@@ -50,6 +51,10 @@
 
   <body>
     <div class="stocks-container"></div>
+
+    <p>
+      <a href="#" id="share" onclick="downloadShareImage()">Share</a>
+    </p>
 
     <p class="attribution">
       Data provided for free by <a href="https://iextrading.com/developer/" target="_blank">IEX</a>.
@@ -249,6 +254,26 @@
         if (favicon.getAttribute('href') !== href) {
           favicon.setAttribute('href', href);
         }
+      }
+
+      function canvasToObjectURL(canvas) {
+        return new Promise((resolve) => {
+          canvas.toBlob((blob) => {
+            const objectURL = URL.createObjectURL(blob);
+            resolve(objectURL);
+          });
+        });
+      }
+
+      function downloadShareImage() {
+        const imageContainer = document.querySelector('.stocks-container');
+        html2canvas(imageContainer).then(canvas => {
+          canvasToObjectURL(canvas).then((objectURL) => {
+            const share_button = document.getElementById('share');
+            share_button.setAttribute('href', objectURL);
+            share_button.click();
+          });
+        });
       }
     </script>
   </body>
