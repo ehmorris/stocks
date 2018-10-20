@@ -258,8 +258,8 @@
       }
 
       function canvasToObjectURL(canvas) {
-        return new Promise((resolve) => {
-          canvas.toBlob((blob) => {
+        return new Promise(resolve => {
+          canvas.toBlob(blob => {
             const objectURL = URL.createObjectURL(blob);
             resolve(objectURL);
           });
@@ -267,17 +267,17 @@
       }
 
       function generateShareImage(event) {
-        const image_container = document.querySelector('.stocks-container');
-        const share_button = document.getElementById('share');
+        const imageContainer = document.querySelector('.stocks-container');
+        const shareButton = document.getElementById('share');
 
-        if (!share_button.hasAttribute('has-download-url')) {
+        if (!shareButton.hasAttribute('has-download-url')) {
           event.preventDefault();
-          html2canvas(image_container).then(canvas => {
-            canvasToObjectURL(canvas).then((objectURL) => {
-              share_button.setAttribute('href', objectURL);
-              share_button.setAttribute('has-download-url', true);
-              share_button.click();
-              share_button.removeAttribute('has-download-url');
+          html2canvas(imageContainer).then(canvas => {
+            canvasToObjectURL(canvas).then(objectURL => {
+              shareButton.setAttribute('href', objectURL);
+              shareButton.setAttribute('has-download-url', true);
+              shareButton.click();
+              shareButton.removeAttribute('has-download-url');
             });
           });
         }
