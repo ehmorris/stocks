@@ -52,7 +52,7 @@
     <div class="stocks-container"></div>
 
     <p>
-      <a href="#" id="share" download="stocks.png" onclick="generateShareImage(event)">Share</a>
+      <a href="#" id="share" download="stocks.png" onclick="downloadShareImage(event)">Download A Screenshot</a>
     </p>
 
     <p class="attribution">
@@ -266,16 +266,20 @@
         });
       }
 
-      function generateShareImage(event) {
-        const imageContainer = document.querySelector('.stocks-container');
+      function downloadShareImage(event) {
         const shareButton = document.getElementById('share');
-
+ 
         if (!shareButton.hasAttribute('has-download-url')) {
           event.preventDefault();
+          const imageContainer = document.querySelector('.stocks-container');
+          const t = new Date();
+          const formattedTime = `${t.getMonth()+1}_${t.getDate()}_${t.getFullYear()} ${t.getHours()}_${t.getMinutes()}_${t.getSeconds()}`;
+
           html2canvas(imageContainer).then(canvas => {
             canvasToObjectURL(canvas).then(objectURL => {
               shareButton.setAttribute('href', objectURL);
               shareButton.setAttribute('has-download-url', true);
+              shareButton.setAttribute('download', `stocks ${formattedTime}.png`);
               shareButton.click();
               shareButton.removeAttribute('has-download-url');
             });
