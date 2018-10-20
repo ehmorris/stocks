@@ -53,7 +53,7 @@
     <div class="stocks-container"></div>
 
     <p>
-      <a href="#" id="share" onclick="downloadShareImage()">Share</a>
+      <a href="#" id="share" download="stocks.png" onclick="generateShareImage(event)">Share</a>
     </p>
 
     <p class="attribution">
@@ -265,15 +265,21 @@
         });
       }
 
-      function downloadShareImage() {
-        const imageContainer = document.querySelector('.stocks-container');
-        html2canvas(imageContainer).then(canvas => {
-          canvasToObjectURL(canvas).then((objectURL) => {
-            const share_button = document.getElementById('share');
-            share_button.setAttribute('href', objectURL);
-            share_button.click();
+      function generateShareImage(event) {
+        const image_container = document.querySelector('.stocks-container');
+        const share_button = document.getElementById('share');
+
+        if (!share_button.hasAttribute('has-download-url')) {
+          event.preventDefault();
+          html2canvas(image_container).then(canvas => {
+            canvasToObjectURL(canvas).then((objectURL) => {
+              share_button.setAttribute('href', objectURL);
+              share_button.setAttribute('has-download-url', true);
+              share_button.click();
+              share_button.removeAttribute('has-download-url');
+            });
           });
-        });
+        }
       }
     </script>
   </body>
